@@ -5,8 +5,8 @@ import zipfile
 import wget
 import subprocess
 
-versionURL = "https://drive.google.com/uc?export=download&id=17h6tLvjUE8AT9U-kIqWQYRTddNu-gXEU"
-dataURL = "https://drive.google.com/uc?export=download&id=11U7lW7WdffKjmRsvXL73rGKP_V1JwABP"
+versionURL = "https://drive.google.com/uc?export=download&confirm=yTib&id=17h6tLvjUE8AT9U-kIqWQYRTddNu-gXEU"
+dataURL = "https://drive.google.com/uc?export=download&confirm=yTib&id=11U7lW7WdffKjmRsvXL73rGKP_V1JwABP"
 
 
 def launchGame():
@@ -22,6 +22,7 @@ def progressBar(current, total, width=80):
 
 
 def download():
+    print("")
     print("Starting download. This can take a while")
     wget.download(dataURL, "Data/Game", bar=progressBar)
     print()
@@ -64,10 +65,17 @@ if __name__ == "__main__":
             checkVersion = checkVersion.readline()
             print("Latest Version: " + checkVersion)
         if not currentVersion == checkVersion:
-            print("New version!")
-            print("Updating")
-            deleteGame()
-            download()
+            print("New version: V" + checkVersion)
+            update = input("Do you want to upgrade to V" + checkVersion + "? [y/n]").lower()
+            if update == "y":
+                print("Updating")
+                deleteGame()
+                download()
+            else:
+                print("Launching V" + currentVersion)
+                with open("Data/version.txt.txt", "w") as file:
+                    file.write(currentVersion)
+                launchGame()
         else:
             print("Up to date!")
             launchGame()
