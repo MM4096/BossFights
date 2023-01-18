@@ -14,7 +14,6 @@ game2dData = "https://drive.google.com/uc?export=download&confirm=yTib&id=11U7lW
 def DeleteAll(path):
     dirs = os.listdir(path)
     for fod in dirs:
-        print("Current fod: " + fod)
         if os.path.isdir(os.path.join(path, fod)):
             print("New directory found: " + path + "/" + fod)
             DeleteAll(os.path.join(path, fod))
@@ -35,12 +34,16 @@ def Run3D():
             savedVersion = file1.readline()
         os.remove("Data/3DV.txt")
     wget.download(game3dVersion, "Data/3DV.txt")
+    print("")
     with open("Data/3DV.txt", "r") as file2:
         onlineVersion = file2.readline()
     if not onlineVersion == savedVersion:
+        print("Deleting old version")
+        DeleteAll("Data/Game/3d")
         print("New update!")
         print("Downloading Boss Fights 3D.zip")
         wget.download(game3dData, "Data/Game/3d/game.zip")
+        print("")
         print("Extracting")
         with zipfile.ZipFile("Data/Game/3d/game.zip", "r") as gameZip:
             gameZip.extractall("Data/Game/3d")
@@ -57,12 +60,16 @@ def Run2D():
             savedVersion = file1.readline()
         os.remove("Data/2DV.txt")
     wget.download(game2dVersion, "Data/2DV.txt")
+    print("")
     with open("Data/2DV.txt", "r") as file2:
         onlineVersion = file2.readline()
     if not onlineVersion == savedVersion:
+        print("Deleting old version")
+        DeleteAll("Data/Game/2d")
         print("New update!")
         print("Downloading Boss Fights 2D.zip")
         wget.download(game2dData, "Data/Game/2d/game.zip")
+        print("")
         print("Extracting")
         with zipfile.ZipFile("Data/Game/2d/game.zip", "r") as gameZip:
             gameZip.extractall("Data/Game/2d")
@@ -131,11 +138,13 @@ if __name__ == "__main__":
     if not os.path.exists("Data/launcherVersion.txt"):
         currentLauncherVersion = 0
         wget.download(launcherVersion, "Data/launcherVersion.txt")
+        print("")
     else:
         with open("Data/launcherVersion.txt", "r") as file:
             currentLauncherVersion = file.readline()
     os.remove("Data/launcherVersion.txt")
     wget.download(launcherVersion, "Data/launcherVersion.txt")
+    print("")
     with open("Data/launcherVersion.txt", "r") as file:
         onlineLauncherVersion = file.readline()
     print("")
@@ -146,6 +155,7 @@ if __name__ == "__main__":
         print("Downloading")
         os.rename("launcher.exe", "placeholder.exe")
         wget.download(launcherData, "launcher.exe")
+        print("")
         os.remove("placeholder.exe")
-        os.startfile("launcher.exe")
+        os.system("launcher.exe")
     RunLauncher()
